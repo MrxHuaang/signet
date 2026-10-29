@@ -2,7 +2,7 @@
 
 Dibuja tu firma con el dedo, el mouse o un lápiz y descárgala lista para pegar en Word, Google Docs o un PDF.
 
-**[signet.vercel.app](https://signet.vercel.app)**
+**[signet-firma.vercel.app](https://signet-firma.vercel.app)**
 
 ## Qué hace
 
