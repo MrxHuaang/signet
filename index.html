@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Firma · Dibuja tu firma digital</title>
+    <meta name="description" content="Dibuja tu firma con el dedo, el mouse o un lápiz y descárgala como PNG transparente o SVG, recortada y lista para Word, Google Docs o PDF." />
+    <meta name="author" content="Juan Ordóñez" />
+    <meta name="theme-color" content="#e6e9ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1d2027" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content="Firma · Dibuja tu firma digital" />
+    <meta property="og:description" content="PNG transparente o SVG, recortado y listo para pegar en tus documentos. Nada sale de tu navegador." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Firma, inicio">
+        <span class="brand-mark" data-icon="signature" aria-hidden="true"></span>
+        <span class="brand-name">Firma</span>
+      </a>
+      <a class="ghost-link" href="https://github.com/MrxHuaang/firma-digital" target="_blank" rel="noopener noreferrer">
+        <span data-icon="github" aria-hidden="true"></span>
+        <span>Código</span>
+      </a>
+    </header>
+
+    <main>
+      <section class="intro reveal">
+        <h1>Tu firma, lista para cualquier documento.</h1>
+        <p>Dibújala con el dedo, el mouse o un lápiz. Descárgala recortada, con fondo transparente.</p>
+      </section>
+
+      <section class="workspace" aria-label="Firmar">
+        <div class="pad reveal" id="pad" data-empty="true">
+          <div class="paper">
+            <canvas id="canvas" aria-label="Área para firmar. Dibuja tu firma aquí." role="img"></canvas>
+            <div class="guide" aria-hidden="true">
+              <span class="guide-x">×</span>
+              <span class="guide-line"></span>
+              <span class="guide-hint">Firma sobre la línea</span>
+            </div>
+            <p class="rotate-hint" aria-hidden="true">Gira el teléfono para tener más espacio</p>
+          </div>
+
+          <div class="pad-tools" role="toolbar" aria-label="Acciones de la firma">
+            <button class="round" id="undo" type="button" aria-label="Deshacer último trazo" title="Deshacer (Ctrl+Z)" disabled>
+              <span data-icon="undo" aria-hidden="true"></span>
+            </button>
+            <button class="round" id="clear" type="button" aria-label="Borrar todo" title="Borrar todo" disabled>
+              <span data-icon="trash" aria-hidden="true"></span>
+            </button>
+            <button class="round" id="expand" type="button" aria-label="Ampliar el área de firma" aria-pressed="false" title="Ampliar">
+              <span class="when-collapsed" data-icon="expand" aria-hidden="true"></span>
+              <span class="when-expanded" data-icon="check" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+
+        <aside class="rail reveal" aria-label="Estilo y descarga">
+          <fieldset class="field">
+            <legend>Tinta</legend>
+            <div class="swatches" id="inks">
+              <label class="swatch" style="--ink: #16181d">
+                <input type="radio" name="ink" value="#16181d" checked />
+                <span class="swatch-dot"></span>
+                <span class="swatch-name">Negra</span>
+              </label>
+              <label class="swatch" style="--ink: #1d3fae">
+                <input type="radio" name="ink" value="#1d3fae" />
+                <span class="swatch-dot"></span>
+                <span class="swatch-name">Azul</span>
+              </label>
+              <label class="swatch" style="--ink: #0f5c55">
+                <input type="radio" name="ink" value="#0f5c55" />
+                <span class="swatch-dot"></span>
+                <span class="swatch-name">Verde</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Trazo</legend>
+            <div class="segmented" id="weights">
+              <label><input type="radio" name="weight" value="fine" /><span>Fino</span></label>
+              <label><input type="radio" name="weight" value="medium" checked /><span>Medio</span></label>
+              <label><input type="radio" name="weight" value="bold" /><span>Grueso</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field field-preview">
+            <p class="legend" id="preview-label">Así se descarga</p>
+            <figure class="preview" aria-labelledby="preview-label">
+              <img id="preview" alt="Vista previa de tu firma recortada" hidden />
+              <figcaption class="preview-empty" id="preview-empty">Aún no hay firma</figcaption>
+            </figure>
+          </div>
+
+          <div class="exports">
+            <button class="btn btn-primary" id="download-png" type="button" disabled>
+              <span data-icon="download" aria-hidden="true"></span>
+              <span>Descargar PNG</span>
+            </button>
+            <button class="btn" id="copy" type="button" disabled>
+              <span data-icon="copy" aria-hidden="true"></span>
+              <span>Copiar</span>
+            </button>
+            <div class="more">
+              <button class="text-btn" id="download-white" type="button" disabled>PNG con fondo blanco</button>
+              <button class="text-btn" id="download-svg" type="button" disabled>SVG</button>
+            </div>
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="howto" aria-labelledby="howto-title">
+        <h2 id="howto-title">Pégala en tu documento</h2>
+        <div class="tabs" role="tablist" aria-label="Programa">
+          <button role="tab" id="tab-word" aria-controls="panel-word" aria-selected="true" type="button">Word</button>
+          <button role="tab" id="tab-docs" aria-controls="panel-docs" aria-selected="false" tabindex="-1" type="button">Google Docs</button>
+          <button role="tab" id="tab-pdf" aria-controls="panel-pdf" aria-selected="false" tabindex="-1" type="button">PDF</button>
+        </div>
+        <div class="tab-panels">
+          <div role="tabpanel" id="panel-word" aria-labelledby="tab-word" tabindex="0">
+            <ol>
+              <li>Pulsa <strong>Copiar</strong> y pega con <kbd>Ctrl</kbd> + <kbd>V</kbd>, o ve a <strong>Insertar › Imágenes</strong> y elige el PNG.</li>
+              <li>Clic derecho sobre la firma, <strong>Ajustar texto › Delante del texto</strong>, y muévela sobre la línea.</li>
+            </ol>
+          </div>
+          <div role="tabpanel" id="panel-docs" aria-labelledby="tab-docs" tabindex="0" hidden>
+            <ol>
+              <li>Ve a <strong>Insertar › Imagen › Subir desde el ordenador</strong> y elige el PNG.</li>
+              <li>Selecciona la imagen y en la barra que aparece elige <strong>Delante del texto</strong> para colocarla donde quieras.</li>
+            </ol>
+          </div>
+          <div role="tabpanel" id="panel-pdf" aria-labelledby="tab-pdf" tabindex="0" hidden>
+            <ol>
+              <li>En Adobe Acrobat Reader abre <strong>Rellenar y firmar › Firmar › Añadir firma</strong>.</li>
+              <li>Elige <strong>Imagen</strong>, sube el PNG transparente y colócala sobre la línea.</li>
+            </ol>
+          </div>
+        </div>
+        <p class="privacy">
+          <span data-icon="shield" aria-hidden="true"></span>
+          Tu firma se dibuja y se exporta en tu navegador. No se sube a ningún servidor.
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p class="signoff" aria-hidden="true">Firma</p>
+      <div class="footer-bar">
+        <p>© <span id="year">2026</span> Firma. Hecha para firmar sin imprimir.</p>
+        <div class="credit">
+          <span>Diseño y desarrollo por</span>
+          <a href="https://juanordonezvercelapp.vercel.app" target="_blank" rel="noopener noreferrer" class="credit-link">
+            <svg class="isotipo" viewBox="0 0 64 64" aria-hidden="true">
+              <path fill="currentColor" d="M37.89 28.98L55.64 13.53L36.35 27.01ZM38.26 34.14L56.76 35.48L38.61 31.67ZM35.52 37.61L45.64 46.63L37.35 35.9ZM30.19 38.37L29.56 59.89L32.68 38.58ZM26.11 35.02L17.82 43.08L27.65 36.99ZM25.67 30.08L3.16 28.97L25.4 32.56ZM28.78 26.22L18.5 15.91L26.86 27.82ZM33.92 25.67L34.51 8.13L31.44 25.4ZM37.67 28.58L44.63 20.62L35.99 26.72Z" />
+              <path fill="currentColor" opacity="0.75" d="M38.67 33.56L43.44 33.2L38.85 31.87ZM37.74 35.74L44.13 37.92L38.48 34.22ZM36.11 37.48L39.29 39.55L37.34 36.3ZM33.99 38.56L37.08 43.42L35.54 37.87ZM31.63 38.84L32.98 45.97L33.32 38.72ZM29.31 38.3L28.83 43.05L30.94 38.77ZM27.32 37L24.06 42.92L28.69 38ZM25.89 35.1L23.3 37.87L26.84 36.51ZM25.2 32.82L19.87 35.02L25.61 34.47ZM25.33 30.44L18.08 30.54L25.15 32.13ZM26.26 28.26L21.66 26.96L25.52 29.78ZM27.89 26.52L22.62 22.29L26.66 27.7ZM30.01 25.44L27.73 22.41L28.46 26.13ZM32.37 25.16L31.13 19.53L30.68 25.28ZM34.69 25.7L35.86 18.54L33.06 25.23ZM36.68 27L38.76 22.7L35.31 26ZM38.11 28.9L43.19 24.45L37.16 27.49ZM38.8 31.18L42.19 29.46L38.39 29.53Z" />
+              <circle cx="32" cy="32" r="5.4" fill="none" stroke="#ff8912" stroke-width="1.6" />
+            </svg>
+            <span>Juan Ordóñez</span>
+          </a>
+          <a class="footer-icon" href="https://github.com/MrxHuaang" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Juan Ordóñez">
+            <span data-icon="github" aria-hidden="true"></span>
+          </a>
+          <a class="footer-icon" href="https://www.instagram.com/juan.ordonezz/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Juan Ordóñez">
+            <span data-icon="instagram" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
