@@ -1,8 +1,8 @@
-# Firma
+# Rúbrica
 
 Dibuja tu firma con el dedo, el mouse o un lápiz y descárgala lista para pegar en Word, Google Docs o un PDF.
 
-**[firma-digital.vercel.app](https://firma-digital.vercel.app)**
+**[rubrica.vercel.app](https://rubrica.vercel.app)**
 
 ## Qué hace
 

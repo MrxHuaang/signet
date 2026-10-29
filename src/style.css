@@ -716,7 +716,7 @@ kbd {
 /* Sign-off: the name pressed into the canvas, same as the product footers. */
 .signoff {
   margin: 0;
-  font-size: clamp(110px, 27vw, 360px);
+  font-size: clamp(76px, 20vw, 280px);
   font-weight: 700;
   line-height: 0.78;
   letter-spacing: -0.06em;
@@ -724,7 +724,7 @@ kbd {
   color: var(--bg);
   text-shadow: -5px -5px 10px var(--hi), 6px 6px 12px var(--lo);
   user-select: none;
-  padding: 0.08em 0 0.12em;
+  padding: 0.22em 0 0.12em;
 }
 
 .footer-bar {
