@@ -1,6 +1,7 @@
 import SignaturePad, { type PointGroup } from "signature_pad";
 import "@fontsource-variable/geist";
 import "./style.css";
+import { beautify, paintStrokes, strokesToSVG } from "./beautify";
 
 import signatureIcon from "@phosphor-icons/core/assets/regular/signature.svg?raw";
 import githubIcon from "@phosphor-icons/core/assets/regular/github-logo.svg?raw";
@@ -12,6 +13,7 @@ import checkIcon from "@phosphor-icons/core/assets/regular/check.svg?raw";
 import downloadIcon from "@phosphor-icons/core/assets/regular/download-simple.svg?raw";
 import copyIcon from "@phosphor-icons/core/assets/regular/copy.svg?raw";
 import shieldIcon from "@phosphor-icons/core/assets/regular/shield-check.svg?raw";
+import sparkleIcon from "@phosphor-icons/core/assets/regular/sparkle.svg?raw";
 
 const ICONS: Record<string, string> = {
   signature: signatureIcon,
@@ -24,6 +26,7 @@ const ICONS: Record<string, string> = {
   download: downloadIcon,
   copy: copyIcon,
   shield: shieldIcon,
+  sparkle: sparkleIcon,
 };
 
 document.querySelectorAll<HTMLElement>("[data-icon]").forEach((el) => {
@@ -37,6 +40,7 @@ const canvas = $<HTMLCanvasElement>("canvas");
 const undoBtn = $<HTMLButtonElement>("undo");
 const clearBtn = $<HTMLButtonElement>("clear");
 const expandBtn = $<HTMLButtonElement>("expand");
+const beautifyBtn = $<HTMLButtonElement>("beautify");
 const preview = $<HTMLImageElement>("preview");
 const previewEmpty = $<HTMLElement>("preview-empty");
 const pngBtn = $<HTMLButtonElement>("download-png");
@@ -107,6 +111,7 @@ function fitCanvas() {
       })),
     );
   }
+  paintPretty();
   renderPreview();
 }
 
@@ -133,7 +138,8 @@ function hasInk() {
 function sync() {
   const inked = hasInk();
   padEl.dataset.empty = String(!inked);
-  for (const b of [undoBtn, clearBtn, pngBtn, copyBtn, whiteBtn, svgBtn]) b.disabled = !inked;
+  for (const b of [undoBtn, clearBtn, beautifyBtn, pngBtn, copyBtn, whiteBtn, svgBtn]) b.disabled = !inked;
+  paintPretty();
   renderPreview();
 }
 
@@ -148,6 +154,29 @@ pad.addEventListener("beginStroke", () => {
   setStatus("");
 });
 pad.addEventListener("endStroke", sync);
+
+// ---------- beautify ----------
+
+/** Beautified view: the raw samples stay in the pad, only the rendering changes. */
+let pretty = false;
+
+function paintPretty() {
+  if (!pretty || !hasInk()) return;
+  const ctx = canvas.getContext("2d")!;
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.restore();
+  paintStrokes(ctx, beautify(pad.toData()));
+}
+
+beautifyBtn.addEventListener("click", () => {
+  pretty = !pretty;
+  beautifyBtn.setAttribute("aria-pressed", String(pretty));
+  if (pretty) sync();
+  else redraw(copyData());
+  setStatus(pretty ? "Trazo embellecido. Tócalo otra vez para ver el original." : "Trazo original");
+});
 
 function undo() {
   const data = copyData();
@@ -231,7 +260,8 @@ function trimmedSVG(scale = 1): { svg: string; w: number; h: number } | null {
   const w = maxX - minX + TRIM_MARGIN * 2;
   const h = maxY - minY + TRIM_MARGIN * 2;
 
-  const doc = new DOMParser().parseFromString(pad.toSVG(), "image/svg+xml");
+  const source = pretty ? strokesToSVG(beautify(data), box.w, box.h) : pad.toSVG();
+  const doc = new DOMParser().parseFromString(source, "image/svg+xml");
   const svg = doc.documentElement;
   svg.setAttribute("viewBox", `${x.toFixed(2)} ${y.toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)}`);
   svg.setAttribute("width", (w * scale).toFixed(2));
