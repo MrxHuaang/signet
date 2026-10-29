@@ -3,3 +3,6 @@ dist
 .vercel
 *.local
 .impeccable
+
+.vercel
+.env*

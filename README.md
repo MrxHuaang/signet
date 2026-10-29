@@ -1,8 +1,8 @@
-# Rúbrica
+# Signet
 
 Dibuja tu firma con el dedo, el mouse o un lápiz y descárgala lista para pegar en Word, Google Docs o un PDF.
 
-**[rubrica.vercel.app](https://rubrica.vercel.app)**
+**[signet.vercel.app](https://signet.vercel.app)**
 
 ## Qué hace
 
@@ -10,10 +10,10 @@ Dibuja tu firma con el dedo, el mouse o un lápiz y descárgala lista para pegar
 - **Área amplia.** El botón de ampliar lleva el área de firma a pantalla completa; al volver, la firma se conserva sobre la línea.
 - **Recorte automático.** La descarga se ajusta a la tinta con un pequeño margen, sin espacio vacío.
 - **Exportación nítida.** PNG transparente a 4x, PNG con fondo blanco, SVG vectorial o copiar al portapapeles.
-- **Tinta y trazo** (negra, azul, verde; fino, medio, grueso) se aplican a toda la firma al instante.
+- **Tinta y trazo** (negra, azul, café; fino, medio, grueso) se aplican a toda la firma al instante.
 - **Deshacer** con el botón o `Ctrl` + `Z`.
 - **Privada.** Todo ocurre en el navegador; la firma no se sube a ningún servidor.
-- Modo claro y oscuro según el sistema, y respeta `prefers-reduced-motion`.
+- Respeta `prefers-reduced-motion`.
 
 ## Desarrollo
 

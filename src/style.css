@@ -1,7 +1,7 @@
 /*
- * Soft UI (neumorphism) on a cool grey canvas. Every surface is the canvas
+ * Soft UI (neumorphism) on a warm white canvas, one coffee accent. Every surface is the canvas
  * colour; depth comes only from a pair of shadows: a light one up-left and a
- * blue-grey one down-right. Raised = can be pressed, inset = holds something.
+ * warm grey one down-right. Raised = can be pressed, inset = holds something.
  *
  * Radius rule: shells 32px, panels and fields 20px, controls 14px,
  * icon buttons and swatch dots are round.
@@ -9,25 +9,24 @@
 
 :root {
   color-scheme: light;
-  --bg: #e6e9ef;
-  --paper: #e6e9ef;
-  --ink: #1c2230;
-  --ink-2: #485165;
-  --ink-3: #5f687c;
-  --accent: #2b4fd1;
-  --accent-ink: #ffffff;
-  --accent-soft: rgb(43 79 209 / 0.14);
-  --hi: rgb(255 255 255 / 0.9);
-  --lo: rgb(160 170 190 / 0.62);
-  --hi-paper: rgb(255 255 255 / 0.9);
-  --lo-paper: rgb(160 170 190 / 0.62);
-  --guide: rgb(28 34 48 / 0.28);
-  --check: rgb(28 34 48 / 0.05);
+  --bg: #f4f3f1;
+  --paper: #f4f3f1;
+  --ink: #26221f;
+  --ink-2: #5a524b;
+  --ink-3: #6b635c;
+  --accent: #6b4a35;
+  --accent-ink: #fbf9f7;
+  --hi: rgb(255 255 255 / 0.95);
+  --lo: rgb(178 166 152 / 0.42);
+  --hi-paper: rgb(255 255 255 / 0.95);
+  --lo-paper: rgb(178 166 152 / 0.42);
+  --guide: rgb(38 34 31 / 0.26);
+  --check: rgb(38 34 31 / 0.045);
 
-  --raise: -6px -6px 14px var(--hi), 6px 6px 14px var(--lo);
-  --raise-sm: -3px -3px 8px var(--hi), 4px 4px 9px var(--lo);
+  --raise: -7px -7px 16px var(--hi), 7px 7px 16px var(--lo);
+  --raise-sm: -4px -4px 9px var(--hi), 4px 4px 10px var(--lo);
   --inset: inset 5px 5px 11px var(--lo), inset -5px -5px 11px var(--hi);
-  --inset-sm: inset 3px 3px 6px var(--lo), inset -3px -3px 6px var(--hi);
+  --inset-sm: inset 3px 3px 7px var(--lo), inset -3px -3px 7px var(--hi);
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --font: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -35,25 +34,6 @@
   /* layers */
   --z-tools: 2;
   --z-expanded: 50;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --bg: #1d2027;
-    /* The paper stays light so every ink reads the same as it will on a document. */
-    --paper: #e4e7ed;
-    --ink: #e7eaf0;
-    --ink-2: #aab1c0;
-    --ink-3: #959db0;
-    --accent: #4d6ee6;
-    --accent-soft: rgb(120 148 255 / 0.18);
-    --hi: rgb(255 255 255 / 0.055);
-    --lo: rgb(0 0 0 / 0.55);
-    --hi-paper: rgb(255 255 255 / 0.85);
-    --lo-paper: rgb(150 160 180 / 0.6);
-    --check: rgb(28 34 48 / 0.06);
-  }
 }
 
 *,
@@ -270,7 +250,7 @@ canvas {
   left: 0;
   top: 14px;
   font-size: 14px;
-  color: #5f687c;
+  color: var(--ink-3);
   transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
 }
 
@@ -300,13 +280,13 @@ canvas {
   border: 0;
   border-radius: 50%;
   background: var(--paper);
-  color: #2b3345;
+  color: var(--ink-2);
   box-shadow: -3px -3px 8px var(--hi-paper), 4px 4px 9px var(--lo-paper);
   transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease), opacity 0.25s;
 }
 
 .round:hover:not(:disabled) {
-  color: #1d3fae;
+  color: var(--accent);
 }
 
 .round:active:not(:disabled) {
@@ -362,7 +342,7 @@ canvas {
     margin: 0;
     text-align: center;
     font-size: 13px;
-    color: #5f687c;
+    color: var(--ink-3);
     pointer-events: none;
   }
 }
@@ -427,13 +407,6 @@ canvas {
   background: var(--ink);
   box-shadow: 0 0 0 2px var(--bg), 0 0 0 2px transparent;
   transition: box-shadow 0.3s var(--ease);
-}
-
-@media (prefers-color-scheme: dark) {
-  .swatch-dot {
-    /* A paper-coloured halo keeps the dark inks visible on the dark canvas. */
-    box-shadow: 0 0 0 2px var(--paper);
-  }
 }
 
 .swatch:has(input:checked) {
@@ -506,7 +479,7 @@ canvas {
 
 .preview-empty {
   font-size: 14px;
-  color: #5f687c;
+  color: var(--ink-3);
 }
 
 .exports {
@@ -541,11 +514,11 @@ canvas {
 .btn-primary {
   background: var(--accent);
   color: var(--accent-ink);
-  box-shadow: -5px -5px 12px var(--hi), 6px 6px 14px rgb(43 79 209 / 0.35);
+  box-shadow: -5px -5px 12px var(--hi), 6px 6px 14px rgb(107 74 53 / 0.32);
 }
 
 .btn-primary:active:not(:disabled) {
-  box-shadow: inset 3px 3px 7px rgb(10 25 90 / 0.45), inset -2px -2px 6px rgb(255 255 255 / 0.18);
+  box-shadow: inset 3px 3px 7px rgb(50 30 18 / 0.45), inset -2px -2px 6px rgb(255 255 255 / 0.18);
 }
 
 .btn:disabled {
@@ -664,12 +637,6 @@ canvas {
   color: var(--accent);
 }
 
-@media (prefers-color-scheme: dark) {
-  .tab-panels li::before {
-    color: #9db1ff;
-  }
-}
-
 .tab-panels strong {
   color: var(--ink);
   font-weight: 600;
@@ -697,12 +664,6 @@ kbd {
   color: var(--accent);
 }
 
-@media (prefers-color-scheme: dark) {
-  .privacy [data-icon] {
-    color: #9db1ff;
-  }
-}
-
 /* ---------- footer ---------- */
 
 .footer {
@@ -716,7 +677,7 @@ kbd {
 /* Sign-off: the name pressed into the canvas, same as the product footers. */
 .signoff {
   margin: 0;
-  font-size: clamp(76px, 20vw, 280px);
+  font-size: clamp(96px, 23vw, 320px);
   font-weight: 700;
   line-height: 0.78;
   letter-spacing: -0.06em;
